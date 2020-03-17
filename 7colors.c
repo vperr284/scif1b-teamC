@@ -11,7 +11,7 @@
  *     an appropriate data structure would also be preferred), but don't worry.
  *     For this first assignment, no dinosaure will get you if you do that.
  */
-char board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // Filled with zeros
+char board[BOARD_SIZE * BOARD_SIZE] = { "salut" }; // Filled with zeros
 
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y)

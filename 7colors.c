@@ -5,7 +5,7 @@
 #include <time.h>
 
 /* We want a 30x30 board game by default */
-#define BOARD_SIZE 15
+#define BOARD_SIZE 5
 
 /** Represent the actual current board game
  *
@@ -108,7 +108,7 @@ void update_board(char player, char chosen_color)
     } while(c != 0);
 }
 
-void possession(void)
+void possession(double *result_haut, double *result_bas)
 {
     int i, j;
     double c_bas = 0;
@@ -128,6 +128,9 @@ void possession(void)
     printf("Possession\n");
     printf("Player ^: %f\n", perc_haut);
     printf("Player v: %f\n\n", perc_bas);
+//    utilisation de pointeurs pour récuperer les deux valeurs
+    *result_haut = perc_haut;
+    *result_bas = perc_bas;
 }
 
 //void update_board(char player, char chosen_color)
@@ -188,7 +191,7 @@ int main(void)
     char user_input = 0;
     int c=0;
     char player;
-    while(user_input != 'q'){
+    while(1){
         user_input = 0;
         c++;
         
@@ -207,9 +210,18 @@ int main(void)
         printf("Current board state:\n");
         print_board();
         printf("\n");
-        possession();
-        
-
+        double val_haut, val_bas;
+        possession(&val_haut, &val_bas);
+//        val_haut et val_bas contiennent les résultats voulus
+    
+        if(val_haut>50.0){
+            printf("******Player ^ won!******\n");
+            break;
+        }
+        else if(val_bas>50.0){
+            printf("******Player v won!******\n");
+            break;
+        }
     }
     
     return 0; // Everything went well

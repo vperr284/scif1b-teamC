@@ -89,89 +89,105 @@ void print_board(void)
     }
 }
 
-void update_board(char player, char chosen_color)
-{
-    int c = 0;
-    do{
-        c = 0;
-        int i, j;
-        for (i = 0; i < BOARD_SIZE; i++) {
-            for (j = 0; j < BOARD_SIZE; j++) {
-                if(get_cell(i, j) == chosen_color){
-                    if((get_cell(i-1, j) == player & i > 0) | (get_cell(i, j+1) == player & j < BOARD_SIZE - 1) | (get_cell(i+1, j) == player & i < BOARD_SIZE - 1) | (get_cell(i, j-1) == player & j > 0)){
-                        set_cell(i, j, player);
-                        c++;
-                    }
-                }
-            }
-        }
-    } while(c != 0);
-}
-
-void possession(double *result_haut, double *result_bas)
-{
-    int i, j;
-    double c_bas = 0;
-    double c_haut = 0;
-    for (i = 0; i < BOARD_SIZE; i++) {
-        for (j = 0; j < BOARD_SIZE; j++) {
-            if(get_cell(i, j) == 'v'){
-                c_bas++;
-            }
-            else if(get_cell(i, j) == '^'){
-                c_haut++;
-            }
-        }
-    }
-    double perc_haut = 100*c_haut/(BOARD_SIZE*BOARD_SIZE);
-    double perc_bas = 100*c_bas/(BOARD_SIZE*BOARD_SIZE);
-    printf("Possession\n");
-    printf("Player ^: %f\n", perc_haut);
-    printf("Player v: %f\n\n", perc_bas);
-//    utilisation de pointeurs pour récuperer les deux valeurs
-    *result_haut = perc_haut;
-    *result_bas = perc_bas;
-}
-
+// old update_board (too many calculus)
 //void update_board(char player, char chosen_color)
 //{
 //    int c = 0;
-//    if(player == 'v'){
-//        do{
-//            c = 0;
-//            int i, j;
-//            if(get_cell(i-1, j) == player & i > 0){
-//
-//            }
-//            else if(get_cell(i, j+1) == player & j < BOARD_SIZE - 1){
-//
-//            }
-//            else if(get_cell(i+1, j) == player & i < BOARD_SIZE - 1){
-//
-//            }
-//            else if(get_cell(i, j-1) == player & j > 0){
-//
-//            }
-//        } while(c != 0);
-//    }
-//    else if(player == '^'){
-//        do{
-//            c = 0;
-//            int i, j;
-//            for (i = 0; i < BOARD_SIZE; i++) {
-//                for (j = 0; j < BOARD_SIZE; j++) {
-//                    if(get_cell(i, j) == chosen_color){
-//                        if((get_cell(i-1, j) == player & i > 0) | (get_cell(i, j+1) == player & j < BOARD_SIZE - 1) | (get_cell(i+1, j) == player & i < BOARD_SIZE - 1) | (get_cell(i, j-1) == player & j > 0)){
-//                            set_cell(i, j, 'v');
-//                            c++;
-//                        }
+//    do{
+//        c = 0;
+//        int i, j;
+//        for (i = 0; i < BOARD_SIZE; i++) {
+//            for (j = 0; j < BOARD_SIZE; j++) {
+//                if(get_cell(i, j) == chosen_color){
+//                    if((get_cell(i-1, j) == player & i > 0) | (get_cell(i, j+1) == player & j < BOARD_SIZE - 1) | (get_cell(i+1, j) == player & i < BOARD_SIZE - 1) | (get_cell(i, j-1) == player & j > 0)){
+//                        set_cell(i, j, player);
+//                        c++;
 //                    }
 //                }
 //            }
-//        } while(c != 0);
-//    }
-//
+//        }
+//    } while(!c);
 //}
+
+void update_board(char player, char chosen_color)
+{
+    int board_positions[BOARD_SIZE * BOARD_SIZE * 2] = { 0 };
+    int c_tot = 0;
+    
+    int i, j;
+    for (i = 0; i < BOARD_SIZE; i++) {
+        for (j = 0; j < BOARD_SIZE; j++) {
+            if(get_cell(i, j) == player){
+                board_positions[c_tot * 2] = i;
+                board_positions[c_tot * 2 + 1] = j;
+                c_tot++;
+                }
+            }
+        }
+//
+//    int ii, jj;
+//    for (ii = 0; ii < BOARD_SIZE * BOARD_SIZE; ii++) {
+//        for (jj = 0; jj < 2; jj++) {
+//            printf("%d", board_positions[jj * 2 + ii]);
+//        }
+//        printf("\n");
+//    }
+
+    int c;
+    for (c = 0; c < c_tot; c++){
+        i = board_positions[c * 2];
+        j = board_positions[c * 2 + 1];
+        if(get_cell(i-1, j) == chosen_color & i > 0){
+            board_positions[c_tot * 2] = i - 1;
+            board_positions[c_tot * 2 + 1] = j;
+            set_cell(board_positions[c_tot * 2], board_positions[c_tot * 2 + 1], player);
+            c_tot++;
+        }
+        if(get_cell(i, j+1) == chosen_color & j < BOARD_SIZE - 1){
+            board_positions[c_tot * 2] = i;
+            board_positions[c_tot * 2 + 1] = j + 1;
+            set_cell(board_positions[c_tot * 2], board_positions[c_tot * 2 + 1], player);
+            c_tot++;
+        }
+        if(get_cell(i+1, j) == chosen_color & i < BOARD_SIZE - 1){
+            board_positions[c_tot * 2] = i + 1;
+            board_positions[c_tot * 2 + 1] = j;
+            set_cell(board_positions[c_tot * 2], board_positions[c_tot * 2 + 1], player);
+            c_tot++;
+        }
+        if(get_cell(i, j-1) == chosen_color & j > 0){
+            board_positions[c_tot * 2] = i;
+            board_positions[c_tot * 2 + 1] = j - 1;
+            set_cell(board_positions[c_tot * 2], board_positions[c_tot * 2 + 1], player);
+            c_tot++;
+        }
+    }
+}
+
+void possession(double *result_up, double *result_down)
+{
+    int i, j;
+    double c_down = 0;
+    double c_up = 0;
+    for (i = 0; i < BOARD_SIZE; i++) {
+        for (j = 0; j < BOARD_SIZE; j++) {
+            if(get_cell(i, j) == 'v'){
+                c_down++;
+            }
+            else if(get_cell(i, j) == '^'){
+                c_up++;
+            }
+        }
+    }
+    double perc_up = 100*c_up/(BOARD_SIZE*BOARD_SIZE);
+    double perc_down = 100*c_down/(BOARD_SIZE*BOARD_SIZE);
+    printf("Possession\n");
+    printf("Player ^: %f\n", perc_up);
+    printf("Player v: %f\n\n", perc_down);
+//    utilisation de pointeurs pour récuperer les deux valeurs
+    *result_up = perc_up;
+    *result_down = perc_down;
+}
 
 /** Program entry point */
 
@@ -191,7 +207,8 @@ int main(void)
     char user_input = 0;
     int c=0;
     char player;
-    while(1){
+    double val_up = 0, val_down = 0;
+    while(val_up<=50.0 & val_down<=50.0){
         user_input = 0;
         c++;
         
@@ -210,18 +227,18 @@ int main(void)
         printf("Current board state:\n");
         print_board();
         printf("\n");
-        double val_haut, val_bas;
-        possession(&val_haut, &val_bas);
-//        val_haut et val_bas contiennent les résultats voulus
+        possession(&val_up, &val_down);
+//        val_up et val_down contiennent les résultats voulus
+    }
     
-        if(val_haut>50.0){
-            printf("******Player ^ won!******\n");
-            break;
-        }
-        else if(val_bas>50.0){
-            printf("******Player v won!******\n");
-            break;
-        }
+    if(val_up>val_down){
+        printf("****** Player ^ won! ******\n");
+    }
+    else if(val_down>val_up){
+        printf("****** Player v won! ******\n");
+    }
+    else{
+        printf("****** Draw ******\n");
     }
     
     return 0; // Everything went well

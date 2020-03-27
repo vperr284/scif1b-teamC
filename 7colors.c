@@ -85,7 +85,7 @@ void print_board(void)
             printf("%c", get_cell(i, j));
         }
         printf("\n");
-        
+
     }
 }
 
@@ -113,7 +113,7 @@ void update_board(char player, char chosen_color)
 {
     int board_positions[BOARD_SIZE * BOARD_SIZE * 2] = { 0 };
     int c_tot = 0;
-    
+
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++) {
         for (j = 0; j < BOARD_SIZE; j++) {
@@ -191,6 +191,34 @@ void possession(double *result_up, double *result_down)
 
 /** Program entry point */
 
+
+/** Joueur aleatoire */
+
+int joueur_alea(){
+
+    srand((int)time(NULL));
+    char lettre_alea;
+    int nbr_alea=rand()%7;
+    if (nbr_alea==0){
+        lettre_alea='A';}
+    if (nbr_alea==1){
+        lettre_alea='B';}
+    if (nbr_alea==2){
+        lettre_alea='C';}
+    if (nbr_alea==3){
+        lettre_alea='D';}
+    if (nbr_alea==4){
+        lettre_alea='E';}
+    if (nbr_alea==5){
+        lettre_alea='F';}
+    if (nbr_alea==6){
+        lettre_alea='G';}
+
+return lettre_alea;
+}
+
+
+
 int main(void)
 {
     init_board();
@@ -198,12 +226,12 @@ int main(void)
        "*****************************************************\n\n"
        "Current board state:\n");
     print_board();
-    
+
 //    update_board('v','A');
 //
 //    printf("Current board state:\n");
 //    print_board();
-    
+
     char user_input = 0;
     int c=0;
     char player;
@@ -211,26 +239,33 @@ int main(void)
     while(val_up<=50.0 & val_down<=50.0){
         user_input = 0;
         c++;
-        
+
         if(c%2 == 0){
             player = '^';
         }
         else{
             player = 'v';
         }
-        
-        printf("Player %c must input letter\n", player);
-        scanf(" %c", &user_input);
-        update_board(player, user_input);
-        printf("\n");
-        
+
+
+        if (player=='v'){
+            char lettre_alea=joueur_alea();
+            update_board(player,lettre_alea);
+        }
+        else{
+            printf("Player %c must input letter\n", player);
+            scanf(" %c", &user_input);
+            update_board(player, user_input);
+            printf("\n");
+        }
         printf("Current board state:\n");
         print_board();
         printf("\n");
         possession(&val_up, &val_down);
+
 //        val_up et val_down contiennent les résultats voulus
     }
-    
+
     if(val_up>val_down){
         printf("****** Player ^ won! ******\n");
     }
@@ -240,6 +275,6 @@ int main(void)
     else{
         printf("****** Draw ******\n");
     }
-    
+
     return 0; // Everything went well
 }

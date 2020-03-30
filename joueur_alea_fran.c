@@ -196,6 +196,10 @@ void possession(double *result_up, double *result_down)
 
 int joueur_alea(char player){
     char liste[7]={0};
+    int t;
+    for (t=0;t<7;t++){
+        liste[t]='O';
+    }
     int board_positions[BOARD_SIZE * BOARD_SIZE * 2] = { 0 };
     int c_tot = 0;
 
@@ -213,10 +217,8 @@ int joueur_alea(char player){
     for (c = 0; c < c_tot; c++){
         i = board_positions[c * 2];
         j = board_positions[c * 2 + 1];
-        int a;
-        for(a=0;a<7;a++){
-            if(get_cell(i-1, j) == liste[a] & a > 0){
-                    switch(get_cell(i-1, j)){
+        if (i>0){
+                switch(get_cell(i-1, j)){
                     case 'A':
                         liste[0]='A';
                         break;
@@ -238,9 +240,13 @@ int joueur_alea(char player){
                     case 'G':
                         liste[6]='G';
                         break;
+                    case '^':
+                        break;
+                    case 'v':
+                        break;
                     }
-            }
-        if(get_cell(i, j+1) == liste[a] & a > 0){
+        }
+        if (j<BOARD_SIZE-1){
             switch(get_cell(i, j+1)){
                     case 'A':
                         liste[0]='A';
@@ -265,8 +271,8 @@ int joueur_alea(char player){
                         break;
                     }
         }
-        if(get_cell(i+1, j)== liste[a] & a > 0){
-            switch(get_cell(i+1, j)){
+        if (i<BOARD_SIZE-1){
+                switch(get_cell(i+1, j)){
                     case 'A':
                         liste[0]='A';
                         break;
@@ -290,7 +296,7 @@ int joueur_alea(char player){
                         break;
                     }
         }
-        if(get_cell(i, j-1) == liste[a] & a > 0){
+        if (j>0){
             switch(get_cell(i, j-1)){
                     case 'A':
                         liste[0]='A';
@@ -315,30 +321,29 @@ int joueur_alea(char player){
                         break;
                     }
         }
-    }
-    }
-}
+
     int x=0;
     int k;
+    char lettre_back;
     for (k = 0; k < 7; k++){
-        if (liste[k] != 0){
+        if (liste[k] != 'O'){
             x++;
         }
     }
-
     char newlist[x];
     int y=0;
     int l;
-    for (l=0;l < 7;l++){
-        if (liste[l] != 0){
+    for (l=0;l <7;l++){
+        if (liste[l] != 'O'){
             newlist[y]=liste[l];
-            y++
+
+            y++;
         }
     }
-    int lettrealea=rand() %x;
-    char lettre_back;
+    int lettrealea=rand()%x;
     lettre_back=newlist[lettrealea];
     return lettre_back;
+}
 }
 
 

@@ -1,47 +1,29 @@
-/* Template of the 7 wonders of the world of the 7 colors assigment. */
-
 #include <stdio.h>     /* printf */
 #include <stdlib.h>
 #include <time.h>
 
-/* We want a 30x30 board game by default */
+/* We want a BOARD_SIZExBOARD_SIZE board game by default */
 #define BOARD_SIZE 5
 
-/** Represent the actual current board game
- *
- * NOTE: global variables are usually discouraged (plus encapsulation in
- *     an appropriate data structure would also be preferred), but don't worry.
- *     For this first assignment, no dinosaure will get you if you do that.
- */
 char board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // Filled with zeros
 
-/** Retrieves the color of a given board cell */
 char get_cell(int x, int y)
 {
     return board[y * BOARD_SIZE + x];
 }
 
-/** Changes the color of a given board cell */
 void set_cell(int x, int y, char color)
 {
     board[y * BOARD_SIZE + x] = color;
 }
 
-/** Prints the current state of the board on screen
- *
- * Implementation note: It would be nicer to do this with ncurse or even
- * SDL/allegro, but this is not really the purpose of this assignment.
- */
-
 void init_board(void)
 {
     srand((int)time(NULL)); // initialisation of rand
-    int nombre_aleatoire = 0;
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++) {
         for (j = 0; j < BOARD_SIZE; j++) {
-            nombre_aleatoire = rand()%7;
-            //printf("%d",nombre_aleatoire);
+            int rd_number = rand()%7;
             if(i==0 & j==BOARD_SIZE-1){
                 set_cell(i, j, '^');
             }
@@ -49,7 +31,7 @@ void init_board(void)
                 set_cell(i, j, 'v');
             }
             else{
-                switch(nombre_aleatoire){
+                switch(rd_number){
                     case 0:
                         set_cell(i, j, 'A');
                         break;
@@ -85,7 +67,7 @@ void print_board(void)
             printf("%c", get_cell(i, j));
         }
         printf("\n");
-
+        
     }
 }
 
@@ -113,7 +95,7 @@ void update_board(char player, char chosen_color)
 {
     int board_positions[BOARD_SIZE * BOARD_SIZE * 2] = { 0 };
     int c_tot = 0;
-
+    
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++) {
         for (j = 0; j < BOARD_SIZE; j++) {
@@ -124,14 +106,6 @@ void update_board(char player, char chosen_color)
                 }
             }
         }
-//
-//    int ii, jj;
-//    for (ii = 0; ii < BOARD_SIZE * BOARD_SIZE; ii++) {
-//        for (jj = 0; jj < 2; jj++) {
-//            printf("%d", board_positions[jj * 2 + ii]);
-//        }
-//        printf("\n");
-//    }
 
     int c;
     for (c = 0; c < c_tot; c++){
@@ -189,83 +163,152 @@ void possession(double *result_up, double *result_down)
     *result_down = perc_down;
 }
 
-/** Program entry point */
-
-
-/** Joueur aleatoire */
-
-int joueur_alea(){
-
-    srand((int)time(NULL));
-    char lettre_alea;
-    int nbr_alea=rand()%7;
-    if (nbr_alea==0){
-        lettre_alea='A';}
-    if (nbr_alea==1){
-        lettre_alea='B';}
-    if (nbr_alea==2){
-        lettre_alea='C';}
-    if (nbr_alea==3){
-        lettre_alea='D';}
-    if (nbr_alea==4){
-        lettre_alea='E';}
-    if (nbr_alea==5){
-        lettre_alea='F';}
-    if (nbr_alea==6){
-        lettre_alea='G';}
-
-return lettre_alea;
+void switch_letters_near(char *letters_near, int i, int j){
+    switch(get_cell(i, j)){
+        case 'A':
+            letters_near[0] = 'A';
+            break;
+        case 'B':
+            letters_near[1] = 'B';
+            break;
+        case 'C':
+            letters_near[2] = 'C';
+            break;
+        case 'D':
+            letters_near[3] = 'D';
+            break;
+        case 'E':
+            letters_near[4] = 'E';
+            break;
+        case 'F':
+            letters_near[5] = 'F';
+            break;
+        case 'G':
+            letters_near[6] = 'G';
+            break;
+        case '^':
+            break;
+        case 'v':
+            break;
+    }
 }
 
+char rd_player(char player){
+    char letters_near[7] = { '0' };
+    int i;
+    for (i = 0; i < 7; i++){
+        letters_near[i] = '0';
+    }
+
+    int board_positions[BOARD_SIZE * BOARD_SIZE * 2] = { 0 };
+    int c_tot = 0;
+
+    int j;
+    for (i = 0; i < BOARD_SIZE; i++) {
+        for (j = 0; j < BOARD_SIZE; j++) {
+            if(get_cell(i, j) == player){
+                board_positions[c_tot * 2] = i;
+                board_positions[c_tot * 2 + 1] = j;
+                c_tot++;
+                }
+            }
+        }
+
+    int c;
+    for (c = 0; c < c_tot; c++){
+        i = board_positions[c * 2];
+        j = board_positions[c * 2 + 1];
+        if(i > 0){
+            switch_letters_near(letters_near, i-1, j);
+        }
+        if(j < BOARD_SIZE - 1){
+            switch_letters_near(letters_near, i, j+1);
+        }
+        if(i < BOARD_SIZE - 1){
+            switch_letters_near(letters_near, i+1, j);
+        }
+        if(j > 0){
+            switch_letters_near(letters_near, i, j-1);
+        }
+    }
+    
+    int rd_number = rand()%7;
+    while (letters_near[rd_number] == '0'){
+        rd_number = rand()%7;
+    }
+    return letters_near[rd_number];
+}
 
 
 int main(void)
 {
+    int game_mode = 0;
+    printf("\nSelect game mode\n");
+    printf("1: Player vs Player\n");
+    printf("2: Player vs AI\n");
+    scanf("%d", &game_mode);
+    
     init_board();
     printf("\n\nWelcome to the 7 wonders of the world of the 7 colors\n"
        "*****************************************************\n\n"
        "Current board state:\n");
     print_board();
-
+    
 //    update_board('v','A');
 //
 //    printf("Current board state:\n");
 //    print_board();
-
+    
+    
     char user_input = 0;
-    int c=0;
+    int c = 0;
     char player;
     double val_up = 0, val_down = 0;
     while(val_up<=50.0 & val_down<=50.0){
         user_input = 0;
         c++;
-
-        if(c%2 == 0){
-            player = '^';
+        
+        switch(game_mode){
+            case 1:
+                if(c%2 == 0){
+                    player = '^';
+                }
+                else{
+                    player = 'v';
+                }
+                scanf(" %c", &user_input);
+                while (user_input == '^' | user_input == 'v'){
+                    scanf(" %c", &user_input);
+                }
+                update_board(player, user_input);
+                printf("\n");
+                break;
+            case 2:
+                if(c%2 == 0){
+                    char rd_letter = rd_player('^');
+                    printf("rd %c", rd_letter);
+                    update_board('^', rd_letter);
+                    printf("\n");
+                }
+                else{
+                    printf("Player v must input letter\n");
+                    scanf(" %c", &user_input);
+                    while (user_input == '^' | user_input == 'v'){
+                        scanf(" %c", &user_input);
+                    }
+                    update_board('v', user_input);
+                    printf("\n");
+                }
+                break;
         }
-        else{
-            player = 'v';
-        }
-
-
-        if (player=='v'){
-            char lettre_alea=joueur_alea();
-            update_board(player,lettre_alea);
-        }
-        else{
-            printf("Player %c must input letter\n", player);
-            scanf(" %c", &user_input);
-            update_board(player, user_input);
-            printf("\n");
-        }
+        
         printf("Current board state:\n");
         print_board();
         printf("\n");
         possession(&val_up, &val_down);
-
 //        val_up et val_down contiennent les résultats voulus
     }
-
+    
     if(val_up>val_down){
         printf("****** Player ^ won! ******\n");
     }
@@ -275,6 +318,6 @@ int main(void)
     else{
         printf("****** Draw ******\n");
     }
-
+    
     return 0; // Everything went well
 }

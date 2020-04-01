@@ -10,5 +10,6 @@
 char get_cell(int x, int y);
 void set_cell(int x, int y, char color);
 void init_board(void);
+void print_board(void);
 
 #endif /* base_h */

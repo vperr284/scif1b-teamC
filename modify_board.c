@@ -5,6 +5,26 @@
 #include "base.h"
 #include "modify_board.h"
 
+// old update_board (too many calculus)
+//void update_board(char player, char chosen_color)
+//{
+//    int c = 0;
+//    do{
+//        c = 0;
+//        int i, j;
+//        for (i = 0; i < BOARD_SIZE; i++) {
+//            for (j = 0; j < BOARD_SIZE; j++) {
+//                if(get_cell(i, j) == chosen_color){
+//                    if((get_cell(i-1, j) == player & i > 0) | (get_cell(i, j+1) == player & j < BOARD_SIZE - 1) | (get_cell(i+1, j) == player & i < BOARD_SIZE - 1) | (get_cell(i, j-1) == player & j > 0)){
+//                        set_cell(i, j, player);
+//                        c++;
+//                    }
+//                }
+//            }
+//        }
+//    } while(!c);
+//}
+
 void update_board(char player, char chosen_color)
 {
     int board_positions[BOARD_SIZE * BOARD_SIZE * 2] = { 0 };

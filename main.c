@@ -6,38 +6,6 @@
 #include "modify_board.h"
 #include "random_player.h"
 
-void print_board(void)
-{
-    int i, j;
-    for (i = 0; i < BOARD_SIZE; i++) {
-        for (j = 0; j < BOARD_SIZE; j++) {
-            printf("%c", get_cell(i, j));
-        }
-        printf("\n");
-        
-    }
-}
-
-// old update_board (too many calculus)
-//void update_board(char player, char chosen_color)
-//{
-//    int c = 0;
-//    do{
-//        c = 0;
-//        int i, j;
-//        for (i = 0; i < BOARD_SIZE; i++) {
-//            for (j = 0; j < BOARD_SIZE; j++) {
-//                if(get_cell(i, j) == chosen_color){
-//                    if((get_cell(i-1, j) == player & i > 0) | (get_cell(i, j+1) == player & j < BOARD_SIZE - 1) | (get_cell(i+1, j) == player & i < BOARD_SIZE - 1) | (get_cell(i, j-1) == player & j > 0)){
-//                        set_cell(i, j, player);
-//                        c++;
-//                    }
-//                }
-//            }
-//        }
-//    } while(!c);
-//}
-
 int main(void)
 {
     srand((unsigned)time(NULL)); // initialisation of rand
@@ -53,12 +21,6 @@ int main(void)
        "*****************************************************\n\n"
        "Current board state:\n", nb_colors, nb_colors);
     print_board();
-    
-//    update_board('v','A');
-//
-//    printf("Current board state:\n");
-//    print_board();
-    
     
     char user_input = 0;
     int c = 0;

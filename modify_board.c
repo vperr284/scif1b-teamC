@@ -29,7 +29,7 @@ void update_board(char player, char chosen_color)
 {
     int board_positions[BOARD_SIZE * BOARD_SIZE * 2] = { 0 };
     int c_tot = 0;
-    
+
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++) {
         for (j = 0; j < BOARD_SIZE; j++) {
@@ -92,7 +92,7 @@ void possession(double *result_up, double *result_down)
     printf("Possession\n");
     printf("Player ^: %f\n", perc_up);
     printf("Player v: %f\n\n", perc_down);
-//    utilisation de pointeurs pour récuperer les deux valeurs
+//    use of pointers to get two values
     *result_up = perc_up;
     *result_down = perc_down;
 }

@@ -48,7 +48,6 @@ int main(void)
             case 2:
                 if(c%2 == 0){
                     char rd_letter = rd_player('^');
-                    printf("rd %c", rd_letter);
                     update_board('^', rd_letter);
                     printf("\n");
                 }
@@ -68,7 +67,7 @@ int main(void)
         print_board();
         printf("\n");
         possession(&val_up, &val_down);
-//        val_up et val_down contiennent les résultats voulus
+//        val_up et val_down are wanted results
     }
     
     if(val_up>val_down){

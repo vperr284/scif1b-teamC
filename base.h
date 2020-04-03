@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-/* We want a BOARD_SIZExBOARD_SIZE board game by default */
+// we want a BOARD_SIZExBOARD_SIZE board game by default
 #define BOARD_SIZE 5
 #define nb_colors 7
 

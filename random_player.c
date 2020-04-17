@@ -11,8 +11,8 @@ char rd_player(char player)
     int c_tot = 0;
 
     int i, j;
-    for (i = 0; i < BOARD_SIZE; i++) {
-        for (j = 0; j < BOARD_SIZE; j++) {
+    for(i = 0; i < BOARD_SIZE; i++){
+        for(j = 0; j < BOARD_SIZE; j++){
             if(get_cell(i, j) == player){
                 board_positions[c_tot * 2] = i;
                 board_positions[c_tot * 2 + 1] = j;
@@ -22,11 +22,11 @@ char rd_player(char player)
         }
 
     char letters_near[nb_colors] = { '0' };
-    for (i = 0; i < nb_colors; i++){
+    for(i = 0; i < nb_colors; i++){
         letters_near[i] = '0';
     }
     int c;
-    for (c = 0; c < c_tot; c++){
+    for(c = 0; c < c_tot; c++){
         i = board_positions[c * 2];
         j = board_positions[c * 2 + 1];
         if(i > 0 & get_cell(i-1, j) != 'v' & get_cell(i-1, j) != '^'){
@@ -43,9 +43,20 @@ char rd_player(char player)
         }
     }
     
-    int rd_number = rand()%nb_colors;
-    while (letters_near[rd_number] == '0'){
-        rd_number = rand()%nb_colors;
+    int boo = 0;
+    for(i = 0; i < nb_colors; i++){
+        if(letters_near[i] != '0'){
+            boo = 1;
+        }
     }
-    return letters_near[rd_number];
+    if(boo == 1){
+        int rd_number = rand()%nb_colors;
+        while (letters_near[rd_number] == '0'){
+            rd_number = rand()%nb_colors;
+        }
+        return letters_near[rd_number];
+    }
+    else{
+        return 'A';
+    }
 }

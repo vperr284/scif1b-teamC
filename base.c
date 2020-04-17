@@ -19,8 +19,8 @@ void set_cell(int x, int y, char color)
 void init_board(void)
 {
     int i, j;
-    for (i = 0; i < BOARD_SIZE; i++) {
-        for (j = 0; j < BOARD_SIZE; j++) {
+    for(i = 0; i < BOARD_SIZE; i++){
+        for(j = 0; j < BOARD_SIZE; j++){
             char rd_letter = 'A' + rand()%nb_colors;
             if(i==0 & j==BOARD_SIZE-1){
                 set_cell(i, j, '^');
@@ -38,8 +38,8 @@ void init_board(void)
 void print_board(void)
 {
     int i, j;
-    for (i = 0; i < BOARD_SIZE; i++) {
-        for (j = 0; j < BOARD_SIZE; j++) {
+    for(i = 0; i < BOARD_SIZE; i++){
+        for(j = 0; j < BOARD_SIZE; j++){
             printf("%c", get_cell(i, j));
         }
         printf("\n");

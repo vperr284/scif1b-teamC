@@ -1,7 +1,9 @@
 #ifndef base_h
 #define base_h
 
-#include <stdio.h>
+#include <stdio.h>     /* printf */
+#include <stdlib.h>
+#include <time.h>
 
 // we want a BOARD_SIZExBOARD_SIZE board game by default
 #define BOARD_SIZE 30

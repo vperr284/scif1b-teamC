@@ -1,7 +1,3 @@
-#include <stdio.h>     /* printf */
-#include <stdlib.h>
-#include <time.h>
-
 #include "base.h"
 #include "random_player.h"
 
@@ -17,9 +13,9 @@ char rd_player(char player)
                 board_positions[c_tot * 2] = i;
                 board_positions[c_tot * 2 + 1] = j;
                 c_tot++;
-                }
             }
         }
+    }
 
     char letters_near[nb_colors] = { '0' };
     for(i = 0; i < nb_colors; i++){

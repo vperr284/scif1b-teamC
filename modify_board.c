@@ -1,7 +1,3 @@
-#include <stdio.h>     /* printf */
-#include <stdlib.h>
-#include <time.h>
-
 #include "base.h"
 #include "modify_board.h"
 

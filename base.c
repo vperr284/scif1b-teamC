@@ -1,7 +1,3 @@
-#include <stdio.h>     /* printf */
-#include <stdlib.h>
-#include <time.h>
-
 #include "base.h"
 
 char board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // Filled with zeros

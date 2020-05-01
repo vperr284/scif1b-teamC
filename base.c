@@ -14,6 +14,7 @@ void set_cell(int x, int y, char color)
 
 void init_board(void)
 {
+    srand((unsigned)time(NULL)); // initialisation of rand
     int i, j;
     for(i = 0; i < BOARD_SIZE; i++){
         for(j = 0; j < BOARD_SIZE; j++){

@@ -20,6 +20,7 @@ int main(void)
     printf("7: vorAIcious vs rAIndom\n");
     printf("8: vorAIcious vs hegAImonic\n");
     printf("9: vorAIcious vs forward-looking vorAIcious\n");
+    printf("10: hegAImonic vs forward-looking vorAIcious\n");
     scanf("%d", &game_mode);
     
     printf("\n\nWelcome to the %d wonders of the world of the %d colors\n"
@@ -304,6 +305,55 @@ int main(void)
                 }
                 if(winner_ind == 0){
                     printf("\nAnd the winner of the tournament is........\n\n\n\nvorAIcious with %d matches won!\n", max);
+                }
+                else if(winner_ind == 1){
+                    printf("\nAnd the winner of the tournament is........\n\n\n\nforward-looking vorAIcious with %d matches won!\n", max);
+                }
+                else{
+                    printf("\nAnd the winner of the tournament is........\n\n\n\nNO ONE \n\nLOL\n");
+                }
+                break;
+        case 10:
+                for(match = 1; match < 101; match++){
+                    init_board();
+                    int c = 0;
+                    double val_up = 0, val_down = 0;
+                    char fl_v_letter, hege_letter;
+                    while(val_up<=50.0 & val_down<=50.0){
+//                        printf("\n");
+//                        print_board();
+//                        printf("\n");
+                        c++;
+                        if((c%2 == 0 & match%2 == 0) | (c%2 == 1 & match%2 == 1)){
+                            hege_letter = hege_player('^');
+                            update_board('^', hege_letter);
+                        }
+                        else{
+                            fl_v_letter = fl_v_player('v');
+                            update_board('v', fl_v_letter);
+                        }
+                        possession(&val_up, &val_down);
+                    }
+                    if(val_up>val_down){
+                        scores[0] = scores[0] + 1;
+                    }
+                    else if(val_down>val_up){
+                        scores[1] = scores[1] + 1;
+                    }
+                    else{
+                        scores[2] = scores[2] + 1;
+                    }
+                    printf("Match %d | %d %d %d\n", match, scores[0], scores[1], scores[2]);
+                }
+                
+                for(ind = 0; ind < 3; ind++){
+                    if(max < scores[ind]){
+                        max = scores[ind];
+                        winner_ind = ind;
+                    }
+                }
+                if(winner_ind == 0){
+                    printf("\nAnd the winner of the tournament is........\n\n\n\nhegAImonic with %d matches won!\n", max);
                 }
                 else if(winner_ind == 1){
                     printf("\nAnd the winner of the tournament is........\n\n\n\nforward-looking vorAIcious with %d matches won!\n", max);

@@ -1,6 +1,5 @@
 #include "base.h"
 #include "hegemonic_player.h"
-#include "random_player.h"
 #include "voracious_player.h"
 
 char hege_player(char player)
@@ -95,7 +94,7 @@ char hege_player(char player)
             for(j = 0; j < BOARD_SIZE; j++){
                 if((get_cell(i, j) != '^') | (get_cell(i, j) != 'v')){
                     if((get_cell(i-1, j) == player & i > 0) & (get_cell(i, j+1) == player & j < BOARD_SIZE - 1) & (get_cell(i+1, j) == player & i < BOARD_SIZE - 1) & (get_cell(i, j-1) == player & j > 0)){
-                        return rd_player(player);
+                        return vora_player(player);
                     }
                 }
             }
